@@ -5,6 +5,7 @@ import { SubjectId, UserStats, WeeklyLessonContent } from '@/types';
 import { ALL_LESSONS } from '@/data/curriculumData';
 import { Navbar } from '@/components/Navbar';
 import { ScheduleView } from '@/components/ScheduleView';
+import { InteractiveStudyLab } from '@/components/InteractiveStudyLab';
 import { GamesArena } from '@/components/GamesArena';
 import { StudyTimerModal } from '@/components/StudyTimerModal';
 import { ContentEngineModal } from '@/components/ContentEngineModal';
@@ -13,7 +14,7 @@ import { sounds } from '@/lib/sound';
 import confetti from 'canvas-confetti';
 
 export default function Home() {
-  const [activeTab, setActiveTab] = useState<'program' | 'oyunlar'>('program');
+  const [activeTab, setActiveTab] = useState<'program' | 'laboratuvar' | 'oyunlar'>('program');
   const [activeSubjectId, setActiveSubjectId] = useState<SubjectId>('fen');
   const [customLessonContent, setCustomLessonContent] = useState<WeeklyLessonContent | null>(null);
 
@@ -96,6 +97,12 @@ export default function Home() {
     setActiveTab('oyunlar');
   };
 
+  // Simülasyon laboratuvarından oyunlara geçiş
+  const handleGoToGamesFromLab = (subjectId: SubjectId) => {
+    setActiveSubjectId(subjectId);
+    setActiveTab('oyunlar');
+  };
+
   const currentContent = customLessonContent || ALL_LESSONS[activeSubjectId] || ALL_LESSONS.fen;
 
   return (
@@ -112,12 +119,22 @@ export default function Home() {
 
       {/* Ana İçerik Alanı */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {activeTab === 'program' ? (
+        {activeTab === 'program' && (
           <ScheduleView
             onStartSession={handleStartStudySession}
             onSelectSubjectForGames={handleSelectSubjectForGames}
           />
-        ) : (
+        )}
+
+        {activeTab === 'laboratuvar' && (
+          <InteractiveStudyLab
+            activeSubjectId={activeSubjectId}
+            setActiveSubjectId={setActiveSubjectId}
+            onGoToGames={handleGoToGamesFromLab}
+          />
+        )}
+
+        {activeTab === 'oyunlar' && (
           <GamesArena
             activeSubjectId={activeSubjectId}
             setActiveSubjectId={setActiveSubjectId}
@@ -133,7 +150,7 @@ export default function Home() {
           © 2026 EğitimKozmosu 5 • 5. Sınıf MEB Kazanımları Oyunlaştırılmış Öğrenme ve Etüt Motoru
         </p>
         <p className="mt-1 text-slate-400">
-          20 Dk Etüt + 10 Dk Ekran Kilidi Kuralı • Türkçe Ağırlıklı • Hafta Sonu Turnuva Modu
+          20 Dk Etüt + 10 Dk Ekran Kilidi Kuralı • Türkçe Ağırlıklı • İnteraktif Simülasyon Laboratuvarı
         </p>
       </footer>
 

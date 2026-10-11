@@ -3,12 +3,12 @@
 import React, { useState } from 'react';
 import { UserStats } from '@/types';
 import { sounds } from '@/lib/sound';
-import { Sparkles, Trophy, Flame, Volume2, VolumeX, Terminal, BookOpen, Clock } from 'lucide-react';
+import { Sparkles, Trophy, Volume2, VolumeX, Terminal, BookOpen, Clock, Orbit } from 'lucide-react';
 
 interface Props {
   stats: UserStats;
-  activeTab: 'program' | 'oyunlar';
-  setActiveTab: (tab: 'program' | 'oyunlar') => void;
+  activeTab: 'program' | 'laboratuvar' | 'oyunlar';
+  setActiveTab: (tab: 'program' | 'laboratuvar' | 'oyunlar') => void;
   onOpenBadges: () => void;
   onOpenEngine: () => void;
   onOpenTimer: () => void;
@@ -54,14 +54,14 @@ export const Navbar: React.FC<Props> = ({
           </div>
         </div>
 
-        {/* Ana Navigasyon Tabları */}
+        {/* Ana Navigasyon Tabları (Program, Simülasyon & Özet, Oyun Arenası) */}
         <div className="flex items-center bg-slate-100 dark:bg-slate-800 p-1.5 rounded-2xl border border-slate-200 dark:border-slate-700">
           <button
             onClick={() => {
               setActiveTab('program');
               sounds.playClick();
             }}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition ${
+            className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition ${
               activeTab === 'program'
                 ? 'bg-white dark:bg-slate-900 text-indigo-600 dark:text-indigo-400 shadow-sm'
                 : 'text-slate-600 dark:text-slate-400 hover:text-slate-900'
@@ -70,12 +70,28 @@ export const Navbar: React.FC<Props> = ({
             <Clock className="w-4 h-4" />
             <span>Haftalık Program</span>
           </button>
+
+          <button
+            onClick={() => {
+              setActiveTab('laboratuvar');
+              sounds.playClick();
+            }}
+            className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition ${
+              activeTab === 'laboratuvar'
+                ? 'bg-white dark:bg-slate-900 text-indigo-600 dark:text-indigo-400 shadow-sm'
+                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900'
+            }`}
+          >
+            <Orbit className="w-4 h-4" />
+            <span>Simülasyon & Özet</span>
+          </button>
+
           <button
             onClick={() => {
               setActiveTab('oyunlar');
               sounds.playClick();
             }}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition ${
+            className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition ${
               activeTab === 'oyunlar'
                 ? 'bg-white dark:bg-slate-900 text-indigo-600 dark:text-indigo-400 shadow-sm'
                 : 'text-slate-600 dark:text-slate-400 hover:text-slate-900'
